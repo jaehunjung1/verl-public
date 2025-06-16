@@ -621,3 +621,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# python model_merger.py merge --backend=fsdp --local_dir=../adaptations/geo3k/checkpoints/grpo-geo3k/qwen2.5-vl-7b-it.4nodes/global_step_60/actor --target_dir ../adaptations/geo3k/checkpoints/grpo-geo3k/qwen2.5-vl-7b-it.4nodes/hf_global_step_60

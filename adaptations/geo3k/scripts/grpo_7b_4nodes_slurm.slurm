@@ -48,7 +48,7 @@ echo "Head Node IP: $head_node_ip"
 
 # start head node
 echo "Starting head node at $head_node"
-srun --nodes=1 --ntasks=1 -w "$head_node" --container-image="$CONTAINER_IMAGE" --container-mounts="$CONTAINER_MOUNTS" --container-name="test" bash -c \
+srun --nodes=1 --ntasks=1 -w "$head_node" --container-image="$CONTAINER_IMAGE" --container-mounts="$CONTAINER_MOUNTS" --container-name="verl-sglang" bash -c \
 "ray start --head --node-ip-address=$head_node --port=$head_port --runtime-env-agent-port 9999 --metrics-export-port 9998 --dashboard-agent-grpc-port 9997 --block" &
 sleep 10s
 
@@ -58,7 +58,7 @@ worker_num=$((SLURM_JOB_NUM_NODES))
 for ((i = 1; i < worker_num; i++)); do
   worker_node=${nodes_array[$i]}
   echo "Starting worker node $i at $worker_node"
-  srun --nodes=1 --ntasks=1 -w "$worker_node" --container-image="$CONTAINER_IMAGE" --container-mounts="$CONTAINER_MOUNTS" --container-name="test" bash -c \
+  srun --nodes=1 --ntasks=1 -w "$worker_node" --container-image="$CONTAINER_IMAGE" --container-mounts="$CONTAINER_MOUNTS" --container-name="verl-sglang" bash -c \
   "ray start --address $head_node_ip --runtime-env-agent-port 9999 --metrics-export-port 9998 --dashboard-agent-grpc-port 9997 --block" &
   sleep 1s
 done
@@ -69,7 +69,7 @@ sleep 30s
 
 
 # start job
-srun --overlap --nodes=1 --ntasks=1 -w "$head_node" --container-image="$CONTAINER_IMAGE" --container-mounts="$CONTAINER_MOUNTS" bash -c \
+srun --overlap --nodes=1 --ntasks=1 -w "$head_node" --container-image="$CONTAINER_IMAGE" --container-mounts="$CONTAINER_MOUNTS" --container-name="verl-sglang" bash -c \
 "python -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
     data.train_files=$DATA_DIR/train.parquet \
